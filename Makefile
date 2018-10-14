@@ -12,6 +12,8 @@ run_all:
 	pipenv run ./run.py 3 2
 	pipenv run ./run.py 4 1
 	pipenv run ./run.py 4 2
+	pipenv run ./run.py 5 1
+	pipenv run ./run.py 5 2
 
 test_all:
 	pipenv run pytest
