@@ -7,6 +7,9 @@ programming challenges.
 And yes, the whole import and testing part is very
 hackish. This is a very "top-of-the-knee" project.
 
+If I had to do this again, I'd go for less
+boilerplate and improve my import/lib use knowledge.
+
 Execute
 -------
 
