@@ -1,9 +1,15 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+"""
+Inverse Captcha
+
+https://adventofcode.com/2017/day/1
+"""
+
 # yup, could probably improve this (specially solver), but for now...
 
-import os
+import solutions.utils as utils
 
 
 def _get_input(fpath):
@@ -21,12 +27,8 @@ def solver2(n):
     return sum(int(c1) for c1, c2 in zip(s, s[len(s) // 2:] + s[:len(s) // 2]) if c1 == c2)
 
 
-def _get_fpath(dpath, fname='input.txt'):
-    return os.path.join(dpath, fname)
-
-
 def _run(dpath, func):
-    return func(_get_input(_get_fpath(dpath)))
+    return func(_get_input(utils.get_fpath(dpath)))
 
 
 def part1(dpath):
