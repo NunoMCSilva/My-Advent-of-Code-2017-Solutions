@@ -10,6 +10,8 @@ hackish. This is a very "top-of-the-knee" project.
 If I had to do this again, I'd go for less
 boilerplate and improve my import/lib use knowledge.
 
+~Work in Progress~: Days Solved: 1-3 of 25
+
 Execute
 -------
 
