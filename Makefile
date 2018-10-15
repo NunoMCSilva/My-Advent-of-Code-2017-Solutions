@@ -29,6 +29,10 @@ run_all:
 	pipenv run ./run.py 16 2
 	pipenv run ./run.py 20 1
 	pipenv run ./run.py 20 2
+	pipenv run ./run.py 22 1
+	pipenv run ./run.py 22 2
+	pipenv run ./run.py 24 1
+	pipenv run ./run.py 24 2
 
 test_all:
 	pipenv run pytest
