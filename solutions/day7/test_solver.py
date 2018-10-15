@@ -20,10 +20,10 @@ gyxo (61)
 cntj (57)"""
 
 
-def test_solver():
+def test_solver1():
     # arrange
     in_ = IN.split('\n')
-    print(in_)
+    # print(in_)
 
     # act & assert
     assert solver.solver1(in_) == 'tknk'
@@ -163,5 +163,120 @@ def test_tree_not_connected():
     assert stree.get_root() is None
 
 
+def arrange_stree_in():
+    stree = solver.SolverTree()
+
+    for line in IN.split('\n'):
+        stree.add(*solver.parse_line(line))
+
+    return stree
+
+
+@pytest.mark.parametrize('test_name, test_weight', [
+    ('gyxo', 61),
+    ('ebii', 61),
+    ('jptl', 61),
+
+    ('pbga', 66),
+    ('havc', 66),
+    ('qoyq', 66),
+
+    ('ktlj', 57),
+    ('cntj', 57),
+    ('xhth', 57),
+
+    ('ugml', 68 + 3 * 61),
+    ('padx', 45 + 3 * 66),
+    ('fwft', 72 + 3 * 57),
+
+    ('tknk', 41 + 251 + 243 * 2),
+])
+def test_get_tower_weight(test_name, test_weight):
+    # arrange
+    stree = arrange_stree_in()
+
+    # act
+    weight = stree.get_tower_weight(test_name)
+
+    # assert
+    assert weight == test_weight
+
+
+@pytest.mark.parametrize('test_name, test_bool', [
+    ('gyxo', True),
+    ('ebii', True),
+    ('jptl', True),
+
+    ('pbga', True),
+    ('havc', True),
+    ('qoyq', True),
+
+    ('ktlj', True),
+    ('cntj', True),
+    ('xhth', True),
+
+    ('ugml', True),
+    ('padx', True),
+    ('fwft', True),
+
+    ('tknk', False),
+])
+def test_is_disc_balanced(test_name, test_bool):
+    # arrange
+    stree = arrange_stree_in()
+
+    # act
+    bool_ = stree.is_disc_balanced(test_name)
+
+    # assert
+    assert bool_ == test_bool
+
+
+def test_find_unbalanced_disc():
+    # arrange
+    stree = arrange_stree_in()
+
+    # act & assert
+    assert stree.find_unbalanced_disc() == 'tknk'
+
+
+def test_determinate_weight_correction():
+    # arrange
+    stree = arrange_stree_in()
+
+    # act & assert
+    assert stree.determinate_weight_correction() == ('ugml', 60)
+
+
+@pytest.mark.parametrize('test_name1, test_name2, test_bool', [
+    ('ugml', 'ugml', True),
+    ('ugml', 'gyxo', True),
+    ('gyxo', 'ugml', False),
+    ('tknk', 'gyxo', True),
+    ('gyxo', 'tknk', False),
+    ('pbga', 'havc', False),
+])
+def test_le(test_name1, test_name2, test_bool):
+    # arrange
+    stree = arrange_stree_in()
+
+    # act & assert
+    assert stree.le(test_name1, test_name2) == test_bool
+
+
+#@pytest.mark.skip
+def test_solver2():
+    # arrange
+    in_ = IN.split('\n')
+
+    # act & assert
+    assert solver.solver2(in_) == 60
+
+
+# added after solutions found
 def test_part1():
     assert solver.part1('solutions/day7') == 'rqwgj'
+
+
+def test_part2():
+    assert solver.part2('solutions/day7') == 333

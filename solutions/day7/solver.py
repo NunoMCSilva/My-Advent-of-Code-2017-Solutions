@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import collections
 import copy
+import functools
 import re
 
 import solutions.utils as utils
@@ -13,11 +15,15 @@ class SolverTree:
 
     def __init__(self):
         self.weights = {}
+        # TODO: yes, it could use a lot of work
         self.connections = {}
+        self.connections2 = {}  # ok, this is very hackish
 
     def add(self, bottom: str, weight: int, top_lst: list):
-        # adds a node to the tree (note, bottom can not exist yet)
+        #print('x', bottom, weight, top_lst)
+        self.connections2[bottom] = copy.deepcopy(top_lst)
 
+        # adds a node to the tree (note, bottom can not exist yet)
         self.weights[bottom] = weight
 
         # search if existing bottom is in new top_lst
@@ -61,14 +67,72 @@ class SolverTree:
         if self.is_tree_connected():
             return list(self.connections.keys())[0]
 
+    # TODO: could use some memoize
+    def get_tower_weight(self, name):
+        if not self.connections2[name]:
+            return self.weights[name]
+        else:
+            return self.weights[name] + sum(self.get_tower_weight(k) for k in self.connections2[name])
+
+    def is_disc_balanced(self, name):
+        return len(set([self.get_tower_weight(k) for k in self.connections2[name]])) in (0, 1)
+
+    def find_unbalanced_disc(self):
+        unbalanced_discs = []
+        for name in self.connections2:
+            if not self.is_disc_balanced(name):
+                unbalanced_discs.append(name)
+
+        #if len(unbalanced_discs) == 1:
+            #return unbalanced_discs[0]
+        #else:
+            #key = functools.cmp_to_key(self.le)
+        return sorted(unbalanced_discs, key=functools.cmp_to_key(self.le))[-1]
+
+    # TODO: could use some optimization
+    def le(self, name1, name2):
+        # name1 <= name2
+
+        if name1 == name2:
+            return True
+
+        #print('1', name1, name2, self.connections2[name1])
+        for n in self.connections2[name1]:
+            #print('2', n, name2, self.le(n, name2))
+            if self.le(n, name2):
+                return True
+
+        #return any([self.le(n, name2) for n in self.connections2[name1]])
+        return False
+
+    # TODO: could use some optimization
+    def determinate_weight_correction(self):
+        # assumes one unbalanced disc exists...
+
+        name = self.find_unbalanced_disc()
+        # print('a', name)
+
+        top_weights = {k: self.get_tower_weight(k) for k in self.connections2[name]}
+        top_weights_counter = collections.Counter(top_weights.values())
+        correct_total_weight = [k for k, v in top_weights_counter.items() if v != 1][0]
+
+        incorrect_total_weight_name = [k for k, v in top_weights.items() if v != correct_total_weight][0]
+        incorrect_total_weight = [v for k, v in top_weights.items() if v != correct_total_weight][0]
+        corrected_weight = self.weights[incorrect_total_weight_name] + correct_total_weight - incorrect_total_weight
+        # print('b', incorrect_total_weight_name, correct_total_weight, incorrect_total_weight)
+        # print('c', self.weights[incorrect_total_weight_name])
+
+        # print(incorrect_total_weight_name, corrected_weight)
+        return incorrect_total_weight_name, corrected_weight
+
 
 def parse_line(line):
     mo = REGEXP.search(line)
-    #print(line)
+    # print(line)
     bottom = mo.group('bottom')
     weight = int(mo.group('weight'))
     top = [] if mo.group('top') is None else mo.group('top').split(', ')
-    return (bottom, weight, top)
+    return bottom, weight, top
 
 
 def solver1(in_iterable):
@@ -81,15 +145,15 @@ def solver1(in_iterable):
 
 
 def solver2(in_iterable):
-    raise NotImplementedError
     stree = SolverTree()
 
     for line in in_iterable:
         stree.add(*parse_line(line))
 
-    print(stree.weights[stree.get_root()])
+    return stree.determinate_weight_correction()[1]
 
 
+# takes a bit to run, profile and optimize
 def part1(dpath):
     return solver1(utils.get_input_by_line(utils.get_fpath(dpath)))
 
