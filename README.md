@@ -12,8 +12,12 @@ boilerplate and improve my import/lib use knowledge.
 But since I solved a lot of the problems before
 thinking of putting the solutions on GitHub...
 
+And yes, some solutions (and tests) take quite a
+bit to computed. I really need to profile and
+optimize them.
+
 ~Work in Progress~:
-Days Solved: 1-6 + 7.1 + 8-9 + 11 + 15-16 + 20 of 25
+Days Solved: 1-6 + 7.1 + 8-9 + 11 + 15-16 + 20 + 22 + 24 of 25
 
 Execute
 -------
