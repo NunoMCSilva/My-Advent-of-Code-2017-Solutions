@@ -14,6 +14,21 @@ run_all:
 	pipenv run ./run.py 4 2
 	pipenv run ./run.py 5 1
 	pipenv run ./run.py 5 2
+	pipenv run ./run.py 6 1
+	pipenv run ./run.py 6 2
+	pipenv run ./run.py 7 1
+	pipenv run ./run.py 8 1
+	pipenv run ./run.py 8 2
+	pipenv run ./run.py 9 1
+	pipenv run ./run.py 9 2
+	pipenv run ./run.py 11 1
+	pipenv run ./run.py 11 2
+	pipenv run ./run.py 15 1
+	pipenv run ./run.py 15 2
+	pipenv run ./run.py 16 1
+	pipenv run ./run.py 16 2
+	pipenv run ./run.py 20 1
+	pipenv run ./run.py 20 2
 
 test_all:
 	pipenv run pytest
